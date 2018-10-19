@@ -14,10 +14,11 @@ impl<'a> Graph<'a> {
     }
 
     fn get_deps(&self, node: &'a str) -> Vec<&str> {
-        self.get_deps_recursive(node, vec!())
+		let mut visited = vec!();
+		self.get_deps_recursive(node, &mut visited)
     }
 
-    fn get_deps_recursive(&self, node: &'a str, mut visited: Vec<&'a str>) -> Vec<&str> {
+    fn get_deps_recursive(&self, node: &'a str, visited: &mut Vec<&'a str>) -> Vec<&str> {
         if visited.contains(&node) {
             return vec!();
         }
@@ -29,7 +30,7 @@ impl<'a> Graph<'a> {
                     if !visited.contains(&elt) {
                         result.push(elt)
                     }
-                    result.append(&mut self.get_deps_recursive(elt, visited.clone()));
+                    result.append(&mut self.get_deps_recursive(elt, visited));
                 }
                 result
             }
